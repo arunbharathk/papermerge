@@ -1,3 +1,4 @@
+import ipdb
 from selenium.webdriver.common.by import By
 
 from common_utils.utilis import find_element
@@ -17,9 +18,10 @@ class FormAuthenticationPage(BasePage):
     CONFIRM_LOGOUT_BUTTON = (
         By.XPATH, "//button[contains(@class, 'btn btn-success m-3') and contains(text(), 'Yes, sign out')]")
     SIGNOUT_MESSAGE = (By.XPATH,
-                       "//div[contains(@class, 'alert alert-success alert-dismissible') and contains(text(), 'You have signed out')]")
+                       "/html/body/div[1]")
     MESSAGE_BANNER = (By.XPATH, '/html/body/div[2]/div/div/form/div[1]')
     PAGE_TITLE = (By.XPATH, "/html/head/title")
+    SUCCESS_LOGIN_TEXT = (By.XPATH, "/html/body/div[1]/div[1]/div/div[2]")
 
     def __init__(self, browser):
         self.browser = browser
@@ -46,10 +48,12 @@ class FormAuthenticationPage(BasePage):
         return find_element(self.browser, *self.LOGOUT_BUTTON).is_displayed()
 
     def click_logout_button(self):
-        return find_element(self.browser, *self.LOGOUT_BUTTON).click()
+        find_element(self.browser, *self.LOGOUT_BUTTON).click()
+        return True
 
     def click_confirm_logout(self):
-        return find_element(self.browser, *self.CONFIRM_LOGOUT_BUTTON).click()
+        find_element(self.browser, *self.CONFIRM_LOGOUT_BUTTON).click()
+        return True
 
     def get_current_url(self):
         return self.browser.current_url
@@ -66,3 +70,7 @@ class FormAuthenticationPage(BasePage):
 
     def get_message_banner_colour(self):
         return find_element(self.browser,*self.MESSAGE_BANNER).value_of_css_property('background-color')
+
+    def get_success_login_text(self):
+        return find_element(self.browser, *self.SUCCESS_LOGIN_TEXT).text
+

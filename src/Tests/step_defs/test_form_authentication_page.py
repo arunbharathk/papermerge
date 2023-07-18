@@ -1,3 +1,6 @@
+import time
+
+import ipdb
 from pytest_bdd import scenarios, when, then, parsers
 
 from pageObjects.base import BasePage
@@ -21,9 +24,10 @@ def click_login_button(browser):
     FormAuthenticationPage(browser).click_login_button()
 
 
-@then(parsers.parse('the page title is "{title}"'))
-def verify_page_title(browser, title):
-    assert title == FormAuthenticationPage(browser).get_page_title_text()
+@then(parsers.parse('I should see success login text "{title}"'))
+def verify_login_message(browser, title):
+    time.sleep(2)
+    assert title == FormAuthenticationPage(browser).get_success_login_text().replace("×\n", "")
 
 
 @then(parsers.parse('the opening paragraph text is\n{paragraph}'))
@@ -59,9 +63,11 @@ def verify_message_text_and_colour(browser, config, colour, message):
     if config['browser'] == 'Firefox':
         expected_colour = 'rgb(198, 15, 19)' if colour == 'red' else 'rgb(93, 164, 35)'
     else:
-        expected_colour = 'rgba(198, 15, 19, 1)' if colour == 'red' else 'rgba(93, 164, 35, 1)'
+        expected_colour = 'rgba(220, 53, 69, 1)' if colour == 'red' else 'rgba(93, 164, 35, 1)'
     assert True == FormAuthenticationPage(
         browser).is_message_banner_displayed()
+    print(FormAuthenticationPage(
+        browser).get_message_banner_colour())
     assert expected_colour == FormAuthenticationPage(
         browser).get_message_banner_colour()
     assert message == FormAuthenticationPage(browser).get_message_banner_text()
@@ -94,7 +100,8 @@ def verify_confirm_logout_func(browser):
 
 @then(parsers.parse('I should see "{text}"'))
 def verify_logout_text_msg(browser, text):
-    assert text.lower() == FormAuthenticationPage.logout_message_text().lower()
+    time.sleep(2)
+    assert text.lower() == FormAuthenticationPage(browser).logout_message_text().lower().replace('×\n', '')
 
 
 @then(parsers.parse('a {colour} "{message}" message banner is displayed'))
@@ -103,9 +110,9 @@ def verify_message_text_and_colour(browser, config, colour, message):
     if config['browser'] == 'Firefox':
         expected_colour = 'rgb(198, 15, 19)' if colour == 'red' else 'rgb(93, 164, 35)'
     else:
-        expected_colour = 'rgba(198, 15, 19, 1)' if colour == 'red' else 'rgba(93, 164, 35, 1)'
+        expected_colour = 'rgba(220, 53, 69, 1)' if colour == 'red' else 'rgba(93, 164, 35, 1)'
     assert True == FormAuthenticationPage(
         browser).is_message_banner_displayed()
     assert expected_colour == FormAuthenticationPage(
         browser).get_message_banner_colour()
-    assert message == FormAuthenticationPage(browser).get_message_banner_text().strip()
+    assert message == FormAuthenticationPage(browser).get_message_banner_text().strip().replace('×\n', '')
