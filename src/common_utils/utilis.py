@@ -3,7 +3,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 
-from conftest import explicit_wait
 
 
 def get_element_text(browser, locator):
@@ -28,7 +27,7 @@ def get_element_text(browser, locator):
 
 def get_element_if_visible(browser, locator, locator_value):
     try:
-        given_element = WebDriverWait(browser.driver, explicit_wait).until(
+        given_element = WebDriverWait(browser.driver, 60).until(
             ec.visibility_of_element_located((locator, locator_value)))
         if given_element.is_displayed() and given_element.is_enabled():
             return given_element

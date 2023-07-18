@@ -1,5 +1,7 @@
 {
   "browser": "Chrome",
   "implicit_wait": 10,
-  "explicit_wait": 60
+  "explicit_wait": 60,
+  "username":"admin",
+  "password": "admin"
 }
