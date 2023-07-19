@@ -3,5 +3,6 @@
   "implicit_wait": 10,
   "explicit_wait": 60,
   "username":"admin",
-  "password": "admin"
+  "password": "admin",
+  "token": "26667911a44c56249913c063b7d22b43"
 }

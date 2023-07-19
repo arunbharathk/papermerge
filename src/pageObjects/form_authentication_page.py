@@ -1,4 +1,3 @@
-import ipdb
 from selenium.webdriver.common.by import By
 
 from common_utils.utilis import find_element
@@ -6,10 +5,6 @@ from pageObjects.base import BasePage
 
 
 class FormAuthenticationPage(BasePage):
-    # @property
-    # def PAGE_TITLE(self):
-    #    return By.XPATH, '//title'
-
     USERNAME = (By.ID, "id_login")
     PASSWORD = (By.ID, "id_password")
     LOGIN_BUTTON = (By.XPATH, "//button[text() = 'Sign In']")
@@ -66,11 +61,10 @@ class FormAuthenticationPage(BasePage):
 
     def get_message_banner_text(self):
         # Full text includes 'x' to close the message so need to strip this off
-        return find_element(self.browser,*self.MESSAGE_BANNER).text
+        return find_element(self.browser, *self.MESSAGE_BANNER).text
 
     def get_message_banner_colour(self):
-        return find_element(self.browser,*self.MESSAGE_BANNER).value_of_css_property('background-color')
+        return find_element(self.browser, *self.MESSAGE_BANNER).value_of_css_property('background-color')
 
     def get_success_login_text(self):
         return find_element(self.browser, *self.SUCCESS_LOGIN_TEXT).text
-
