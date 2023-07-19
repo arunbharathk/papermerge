@@ -6,12 +6,14 @@ from pytest_bdd import scenarios, when, given, then
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 
+from pageObjects.base import BasePage
 from pageObjects.form_authentication_page import FormAuthenticationPage
 from pageObjects.page_management import PageManagement
 
 scenarios('../features/page_management.feature')
 
 previousDocuCount = 0
+totalPageNumber = 0
 
 
 @given("I am on the Papermerge application")
@@ -35,7 +37,9 @@ def upload_file(browser):
     browser.execute_script("document.getElementById('id_file_name').removeAttribute('hidden');")
     time.sleep(2)
     element = PageManagement(browser).get_choose_file_button()
-    element.send_keys('/Users/savitha/PycharmProjects/paperMergeTest/src/testData/recp1.pdf')
+    relative_path = "src/testData/pageMergeDocu.pdf"
+    full_path = os.path.abspath(os.path.join(os.getcwd(), relative_path))
+    element.send_keys(full_path)
 
 
 @then("the file should be successfully uploaded")
@@ -57,44 +61,59 @@ def verify_file_availbility(browser):
     assert True == PageManagement(browser).is_document_available()
 
 
-@when('I open the document')
+@given('I open the document')
 def open_the_document(browser):
+    response = PageManagement(browser).open_the_document()
+    assert response, "The click action was not successful."
 
-    assert True == PageManagement(browser).open_the_document().click()
 
-
-
-@when('I select the page using right click')
+@when('I right click and delete the last page')
 def select_empty_page(browser):
-    assert True == PageManagement(browser).click_left_pane()
-
-
-
-#    ipdb.set_trace()
-
-
-#    element = browser.find_element(By.XPATH, "//li[contains(@class, 'last')]/div[@class='page_number']")
-##    page_number = element.text
-#    print(page_number)
-
-#    element = browser.find_element(By.XPATH, "//li[contains(@class, 'last')]/div[@class='page_number']").click()
-
+    global totalPageNumber
+    PageManagement(browser).click_left_pane()
+    time.sleep(2)
+    totalPageNumber = len(PageManagement(browser).get_total_page_number())
+    element = PageManagement(browser).get_select_page()
+    element.click()
     # Create an instance of ActionChains
-#    actions = ActionChains(browser)
+    actions = ActionChains(browser)
 
     # Perform the right-click action on the element
-#    actions.context_click(element).perform()
+    actions.context_click(element).perform()
 
     # Find the "Delete" option in the context menu and click on it
-#    delete_option = browser.find_element(By.ID, "delete-page")
-#    actions.click(delete_option).perform()
-
+    delete_option = PageManagement(browser).select_delete_option()
+    actions.click(delete_option).perform()
     # Switch the focus to the alert popup
-#    alert = browser.switch_to.alert
+    alert = browser.switch_to.alert
 
     # Accept the alert (click OK)
-#    alert.accept()
+    alert.accept()
 
- #   Afterelement = browser.find_element(By.XPATH, "//*[@id='page-thumbnails']/ul/li/div[4]")
- #   page_number = Afterelement.text
- #   print(page_number)
+
+@then('Document should rearrage properly')
+def verify_document_rearrange(browser):
+    # get the latest page number after deletion
+    Lelement = len(PageManagement(browser).get_total_page_number())
+    assert int(Lelement) + 1 == int(totalPageNumber)
+
+
+@given('Delete the uploaded document')
+def delete_document(browser):
+    PageManagement(browser).select_view_filter()
+    element = PageManagement(browser).select_document()
+    element.click()
+    # Create an instance of ActionChains
+    actions = ActionChains(browser)
+
+    # Perform the right-click action on the element
+    actions.context_click(element).perform()
+
+    # Find the "Delete" option in the context menu and click on it
+    delete_option = PageManagement(browser).get_delete_document()
+    actions.click(delete_option).perform()
+    # Switch the focus to the alert popup
+    alert = browser.switch_to.alert
+
+    # Accept the alert (click OK)
+    alert.accept()

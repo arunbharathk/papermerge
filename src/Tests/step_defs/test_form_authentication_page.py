@@ -1,6 +1,5 @@
 import time
 
-import ipdb
 from pytest_bdd import scenarios, when, then, parsers
 
 from pageObjects.base import BasePage
@@ -28,33 +27,6 @@ def click_login_button(browser):
 def verify_login_message(browser, title):
     time.sleep(2)
     assert title == FormAuthenticationPage(browser).get_success_login_text().replace("×\n", "")
-
-
-@then(parsers.parse('the opening paragraph text is\n{paragraph}'))
-def verify_opening_paragraph_text(browser, paragraph):
-    assert paragraph.replace('\n', ' ') == FormAuthenticationPage(
-        browser).get_opening_paragraph_text()
-
-
-@then(parsers.parse('a {input_type} input is displayed'))
-def verify_input_displayed(browser, input_type):
-    assert input_type in ['Username', 'Password']
-    if input_type == 'Username':
-        assert True == FormAuthenticationPage(
-            browser).is_username_input_displayed()
-        assert input_type == FormAuthenticationPage(
-            browser).get_username_input_label_text()
-    else:
-        assert True == FormAuthenticationPage(
-            browser).is_password_input_displayed()
-        assert input_type == FormAuthenticationPage(
-            browser).get_password_input_label_text()
-
-
-@then('a Login button is displayed')
-def verify_login_button_displayed(browser):
-    assert True == FormAuthenticationPage(browser).is_login_button_displayed()
-    assert 'Login' == FormAuthenticationPage(browser).get_login_button_text()
 
 
 @then(parsers.parse('a {colour} "{message}" message banner is displayed'))

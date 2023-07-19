@@ -1,11 +1,11 @@
-@form-authentication
+@form-authentication  @sanity
 Feature: Form Authentication Page
 
 
     Background: Open Form Authentication page
     Given I have navigated to the paperMerge "Form Authentication" page
 
-  @sfdsfsdfsdf
+
   Scenario: Login with valid credentials
     When I enter a Username of "admin"
     And I enter a Password of "admin"

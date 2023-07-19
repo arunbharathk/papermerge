@@ -6,11 +6,7 @@ class BasePage():
 
     PAGE_URLS = {
         "home": BASE_URL + "/",
-        "checkboxes": BASE_URL + "/checkboxes",
-        "dropdown": BASE_URL + "/dropdown",
-        "dynamic controls": BASE_URL + "/dynamic_controls",
         "form authentication": BASE_URL + "/accounts/login/",
-        "inputs": BASE_URL + "/inputs",
         "secure area": BASE_URL + "/secure"
     }
 

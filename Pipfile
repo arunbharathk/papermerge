@@ -12,6 +12,9 @@ sttable = "*"
 requests = "*"
 pyparsing = "*"
 ipdb = "*"
+pytest-html = "*"
+pytest-selenium = "*"
+pytest-logger = "*"
 
 [dev-packages]
 
